@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  adampartsfinder:
+    image: acsdesk/adampartsfinder
+    restart: unless-stopped
+    container_name: "AdamPartsFinder"
+    ports:
+      - 80:3838
