@@ -6,4 +6,4 @@ services:
     restart: unless-stopped
     container_name: "AdamPartsFinder"
     ports:
-      - 80:3838
+      - 80:3838 
