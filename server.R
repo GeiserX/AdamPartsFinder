@@ -1,6 +1,7 @@
 library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
+library(DT)
 
 options(shiny.maxRequestSize=200*1024^2) # 200MB limit on uploads
 
@@ -18,7 +19,7 @@ shinyServer(function(input, output, session) {
       if(dim(found)[1] == 0){
         sendSweetAlert(session = session, title = "Error", text = "Could not find a matching Part ID", type = "error")
       } else {
-        output$partid_results <- renderDataTable(found, options = list(order = list(list(1, 'asc')))) 
+        output$partid_results <- renderDataTable(datatable(found, options = list(order = list(list(1, 'asc'))))) 
       }
     } else {
       sendSweetAlert(session = session, title = "Error", text = "Please, introduce a number before searching", type = "error")

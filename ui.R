@@ -1,8 +1,10 @@
 library(shiny)
 library(shinydashboard)
+library(shinyWidgets)
+library(DT)
 
 dashboardPage(
-    dashboardHeader(title = "Tabs Finder"),
+    dashboardHeader(title = "Parts Finder"),
     dashboardSidebar(
         sidebarMenu(
             menuItem("Search", tabName = "tab1", icon = shiny::icon("search-dollar")),
