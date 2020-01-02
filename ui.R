@@ -17,7 +17,14 @@ dashboardPage(
                 tabItems(
                     tabItem(tabName = "tab1",
                             box(width = 4, status = "primary", title = "Search", solidHeader = T,
-                                numericInput("searchBox", label = "Introduce Part No.", value = NA),
+                                fluidRow( 
+                                    column(6, numericInput("searchBox1", label = "Introduce Part No.", value = NA)),
+                                    column(6, numericInput("searchQuantity1", label = "Introduce Quantity", value = NA)),
+                                    column(6, numericInput("searchBox2", label = "Introduce Part No.", value = NA)),
+                                    column(6, numericInput("searchQuantity2", label = "Introduce Quantity", value = NA)),
+                                    column(6, numericInput("searchBox3", label = "Introduce Part No.", value = NA)),
+                                    column(6, numericInput("searchQuantity3", label = "Introduce Quantity", value = NA))
+                                ),
                                 actionButton("searchButton", "Search", shiny::icon("search-dollar"))
                             ),
                             box(width = 8, status = "info", title = "Search results", solidHeader = T,
