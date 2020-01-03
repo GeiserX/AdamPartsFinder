@@ -8,7 +8,7 @@ RUN R -e "install.packages(c('shiny', 'shinydashboard', 'shinyWidgets', 'DT'), r
 RUN mkdir -p /root/adampartsfinder
 COPY . /root/adampartsfinder
   
-VOLUME /root/adampartsfinder/data ## To improve read/write speeds on this directory
+#VOLUME /root/adampartsfinder/data ## To improve read/write speeds on this directory
 
 EXPOSE 3838
 CMD ["R", "-e", "shiny::runApp('/root/adampartsfinder', port = 3838, host = '0.0.0.0')"]

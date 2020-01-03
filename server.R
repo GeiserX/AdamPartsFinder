@@ -1,17 +1,4 @@
-library(shiny)
-library(shinydashboard)
-library(shinyWidgets)
-library(DT)
-
-options(shiny.maxRequestSize=200*1024^2) # 200MB limit on uploads
-
 shinyServer(function(input, output, session) {
-  
-  dataframe <- reactiveValues(A=data.frame(), B=data.frame(), C=data.frame())
-  if(file.exists("data/SupplierALL.csv")) dataframe$ALL <- read.csv("data/SupplierALL.csv", header = T)
-  if(file.exists("data/SupplierA.csv")) dataframe$A <- read.csv("data/SupplierA.csv", header = T)
-  if(file.exists("data/SupplierB.csv")) dataframe$B <- read.csv("data/SupplierB.csv", header = T)
-  if(file.exists("data/SupplierC.csv")) dataframe$C <- read.csv("data/SupplierC.csv", header = T)
   
   observeEvent(input$searchButton,{
     if(!is.null(input$searchBox1) && is.numeric(input$searchBox1) 
@@ -69,25 +56,35 @@ shinyServer(function(input, output, session) {
     if(is.null(input$fileUpload$name)){
       sendSweetAlert(session = session, title = "Error", text = "You haven't selected any file", type = "error")
     } else {
-      dataframe$`input$selectSupplier` <- read.csv(input$fileUpload$datapath, header = T)
-      write.csv(dataframe$`input$selectSupplier`, paste0("data/Supplier", input$selectSupplier, ".csv"))
+      if(input$selectSupplier == "A"){
+        dataframe$A <- read.csv(input$fileUpload$datapath, header = T, row.names = NULL)
+        dataframe$A <- cbind(Supplier="Supplier A", dataframe$A)
+        write.csv(dataframe$A, "data/SupplierA.csv", row.names = F)
+        output$read_columns <- renderDataTable(datatable(dataframe$A))
+      } else if(input$selectSupplier == "B"){
+        dataframe$B <- read.csv(input$fileUpload$datapath, header = T, row.names = NULL)
+        dataframe$B <- cbind(Supplier="Supplier B", dataframe$B)
+        write.csv(dataframe$B, "data/SupplierB.csv", row.names = F)
+        output$read_columns <- renderDataTable(datatable(dataframe$B))
+      } else {
+        dataframe$C <- read.csv(input$fileUpload$datapath, header = T, row.names = NULL)
+        dataframe$C <- cbind(Supplier="Supplier C", dataframe$C)
+        write.csv(dataframe$C, "data/SupplierC.csv", row.names = F)
+        output$read_columns <- renderDataTable(datatable(dataframe$B))
+      }
+      dataframe$ALL <- rbind(dataframe$A, dataframe$B, dataframe$C)
       
-      dataframe$ALL <- rbind(cbind(Supplier="Supplier A", dataframe$A),
-                             cbind(Supplier="Supplier B", dataframe$B), 
-                             cbind(Supplier="Supplier C", dataframe$C))
-      rownames(dataframe$ALL) <- NULL
-      write.csv(dataframe$ALL, "data/SupplierALL.csv")
+      write.csv(dataframe$ALL, "data/SupplierALL.csv", row.names = F)
       sendSweetAlert(session = session, title = "Done", text = "Data imported successfully", type = "success")
       
-      output$read_columns <- renderDataTable(dataframe$`input$selectSupplier`)
-      Sys.sleep(2)
-      session$reload()
+      # Sys.sleep(2)
+      # session$reload()
     }
   })
   
   observeEvent(input$selectFile,{
     if(file.exists(paste0("data/Supplier", input$selectFile, ".csv"))){
-      show <- read.csv(paste0("data/Supplier", input$selectFile, ".csv"), header = T, row.names = 1)
+      show <- read.csv(paste0("data/Supplier", input$selectFile, ".csv"), header = T)
       output$read_columns_filesystem <- renderDataTable(show) 
     } else {
       sendSweetAlert(session = session, title = "Error", text = "There is no file for this supplier", type = "error")
