@@ -1,5 +1,5 @@
 dashboardPage(
-    skin = "blue",
+    skin = "blue", title = "Parts Finder",
     dashboardHeader(title = tags$img(src='logo.png', height="100%", width="100%", align="left"), titleWidth = 150),
     dashboardSidebar(
         width = 150,
@@ -11,12 +11,18 @@ dashboardPage(
     ),
     dashboardBody(
         tags$head(tags$style(HTML('
-        .skin-blue .main-header .logo  {
-                              background-color: #3689D7;
-                              }
+        .skin-blue .main-header .logo {
+            background-color: #3689D7 !important;
+        }
         .skin-blue .main-header .logo:hover {
-                              background-color: #3689D7;
-                              }'))),
+            background-color: #3689D7 !important;
+        }
+        .box-primary .box-header {
+            background-color: #3689D7 !important;
+        }
+        .navbar {
+            background-color: #3689D7 !important;
+        }'))),
             fluidRow(
                 tabItems(
                     tabItem(tabName = "tab1",
