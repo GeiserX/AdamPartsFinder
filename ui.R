@@ -3,9 +3,13 @@ library(shinydashboard)
 library(shinyWidgets)
 library(DT)
 
+
+
 dashboardPage(
-    dashboardHeader(title = "Parts Finder"),
+    skin = "blue",
+    dashboardHeader(title = tags$img(src='logo.png', height="100%", width="100%", align="left"), titleWidth = 150),
     dashboardSidebar(
+        width = 150,
         sidebarMenu(
             menuItem("Search", tabName = "tab1", icon = shiny::icon("search-dollar")),
             menuItem("Upload", tabName = "tab2", icon = shiny::icon("upload")),
@@ -13,6 +17,14 @@ dashboardPage(
         )
     ),
     dashboardBody(
+        tags$head(tags$style(HTML('
+        .skin-blue .main-header .logo  {
+                              background-color: #3689D7;
+                              }
+                              .skin-blue .main-header .logo:hover {
+                              background-color: #3689D7;
+                              }
+                              '))),
             fluidRow(
                 tabItems(
                     tabItem(tabName = "tab1",
