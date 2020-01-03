@@ -3,8 +3,6 @@ library(shinydashboard)
 library(shinyWidgets)
 library(DT)
 
-
-
 dashboardPage(
     skin = "blue",
     dashboardHeader(title = tags$img(src='logo.png', height="100%", width="100%", align="left"), titleWidth = 150),
@@ -21,10 +19,9 @@ dashboardPage(
         .skin-blue .main-header .logo  {
                               background-color: #3689D7;
                               }
-                              .skin-blue .main-header .logo:hover {
+        .skin-blue .main-header .logo:hover {
                               background-color: #3689D7;
-                              }
-                              '))),
+                              }'))),
             fluidRow(
                 tabItems(
                     tabItem(tabName = "tab1",
@@ -58,7 +55,8 @@ dashboardPage(
                     ),
                     tabItem(tabName = "tab3",
                             box(width = 4, status = "primary", title = "Select CSV to visualize", solidHeader = T,
-                                selectInput("selectFile", choices = c("Supplier A" = "A", "Supplier B" = "B", "Supplier C" = "C"),
+                                selectInput("selectFile", choices = c("Main file" = "ALL", "Supplier A" = "A",
+                                                                      "Supplier B" = "B", "Supplier C" = "C"),
                                             multiple = F, selectize = T, label = "Select a Supplier")
                             ),
                             box(width = 8, status = "info", title = "System data", solidHeader = T,
