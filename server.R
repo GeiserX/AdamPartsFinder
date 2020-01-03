@@ -80,8 +80,8 @@ shinyServer(function(input, output, session) {
       sendSweetAlert(session = session, title = "Done", text = "Data imported successfully", type = "success")
       
       output$read_columns <- renderDataTable(dataframe$`input$selectSupplier`)
-      Sys.sleep(1)
-      shinyjs::js$refresh()
+      Sys.sleep(2)
+      session$reload()
     }
   })
   
