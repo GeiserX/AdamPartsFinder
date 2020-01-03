@@ -1,8 +1,3 @@
-library(shiny)
-library(shinydashboard)
-library(shinyWidgets)
-library(DT)
-
 dashboardPage(
     skin = "blue",
     dashboardHeader(title = tags$img(src='logo.png', height="100%", width="100%", align="left"), titleWidth = 150),
