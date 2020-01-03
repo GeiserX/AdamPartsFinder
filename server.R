@@ -14,42 +14,51 @@ shinyServer(function(input, output, session) {
   if(file.exists("data/SupplierC.csv")) dataframe$C <- read.csv("data/SupplierC.csv", header = T)
   
   observeEvent(input$searchButton,{
-    if(!is.null(input$searchBox1) && is.numeric(input$searchBox1) && !is.null(input$searchQuantity1) && is.numeric(input$searchQuantity1)){
-      found <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox1, ]
-      print(found)
-      found$X.1 <- NULL
-      found$X <- NULL
-      found <- found[found$Quantity > input$searchQuantity1,]
-      found <- found[order(found$Cost.Per.Unit), ]
-      found <- found[1,]
-      if(dim(found)[1] == 0){
-        sendSweetAlert(session = session, title = "Error", text = "Could not find a matching Part ID with available stock", type = "error")
-      } else {
-        if(!is.null(input$searchBox2) && is.numeric(input$searchBox2) && !is.null(input$searchQuantity2) && is.numeric(input$searchQuantity2)){
-          found2 <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox2, ]
-          print(found2)
-          found2$X.1 <- NULL
-          found2$X <- NULL
-          found2 <- found2[found2$Quantity > input$searchQuantity2,]
-          found2 <- found2[order(found2$Cost.Per.Unit), ]
-          found2 <- found2[1,]
-          if(!is.null(input$searchBox3) && is.numeric(input$searchBox3) && !is.null(input$searchQuantity3) && is.numeric(input$searchQuantity3)){
-            found3 <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox3, ]
-            found3$X.1 <- NULL
-            found3$X <- NULL
-            found3 <- found3[found3$Quantity > input$searchQuantity3,]
-            found3 <- found3[order(found3$Cost.Per.Unit), ]
-            found3 <- found3[1,]
-            foundALL <- datatable(rbind(found, found2, found3), rownames=F)
-            output$partid_results <- renderDataTable(foundALL)
+    if(!is.null(input$searchBox1) && is.numeric(input$searchBox1) 
+       && !is.null(input$searchQuantity1) && is.numeric(input$searchQuantity1)){
+      if(file.exists("data/SupplierALL.csv")) {
+        dataframe$ALL <- read.csv("data/SupplierALL.csv", header = T)
+        found <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox1, ]
+        found$X.1 <- NULL
+        found$X <- NULL
+        found <- found[found$Quantity > input$searchQuantity1,]
+        found <- found[order(found$Cost.Per.Unit), ]
+        found <- found[1,]
+        if(dim(found)[1] == 0){
+          sendSweetAlert(session = session, title = "Error",
+                         text = "Could not find a matching Part ID with available stock", type = "error")
+        } else {
+          if(!is.null(input$searchBox2) && is.numeric(input$searchBox2) 
+             && !is.null(input$searchQuantity2) && is.numeric(input$searchQuantity2)){
+            found2 <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox2, ]
+            found2$X.1 <- NULL
+            found2$X <- NULL
+            found2 <- found2[found2$Quantity > input$searchQuantity2,]
+            found2 <- found2[order(found2$Cost.Per.Unit), ]
+            found2 <- found2[1,]
+            if(!is.null(input$searchBox3) && is.numeric(input$searchBox3) &&
+               !is.null(input$searchQuantity3) && is.numeric(input$searchQuantity3)){
+              found3 <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox3, ]
+              found3$X.1 <- NULL
+              found3$X <- NULL
+              found3 <- found3[found3$Quantity > input$searchQuantity3,]
+              found3 <- found3[order(found3$Cost.Per.Unit), ]
+              found3 <- found3[1,]
+              foundALL <- datatable(rbind(found, found2, found3), rownames=F)
+              output$partid_results <- renderDataTable(foundALL)
+            } else {
+              foundALL <- datatable(rbind(found, found2), rownames=F)
+              output$partid_results <- renderDataTable(foundALL)
+            }
           } else {
-            foundALL <- datatable(rbind(found, found2), rownames=F)
+            foundALL <- datatable(found, rownames=F)
             output$partid_results <- renderDataTable(foundALL)
           }
-        } else {
-          foundALL <- datatable(found, rownames=F)
-          output$partid_results <- renderDataTable(foundALL)
         }
+      }
+      else {
+        sendSweetAlert(session = session, title = "Error",
+                       text = "Please, introduce any CSV into the software before searching", type = "error")
       }
     } else {
       sendSweetAlert(session = session, title = "Error", text = "Please, introduce a number before searching", type = "error")
@@ -71,6 +80,8 @@ shinyServer(function(input, output, session) {
       sendSweetAlert(session = session, title = "Done", text = "Data imported successfully", type = "success")
       
       output$read_columns <- renderDataTable(dataframe$`input$selectSupplier`)
+      Sys.sleep(1)
+      shinyjs::js$refresh()
     }
   })
   
