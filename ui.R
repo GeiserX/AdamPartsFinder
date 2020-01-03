@@ -18,8 +18,8 @@ dashboardPage(
                     tabItem(tabName = "tab1",
                             box(width = 4, status = "primary", title = "Search", solidHeader = T,
                                 fluidRow( 
-                                    column(6, numericInput("searchBox1", label = "Introduce Part No.", value = NA)),
-                                    column(6, numericInput("searchQuantity1", label = "Introduce Quantity", value = NA)),
+                                    column(6, numericInput("searchBox1", label = "Introduce Part No.*", value = NA)),
+                                    column(6, numericInput("searchQuantity1", label = "Introduce Quantity*", value = NA)),
                                     column(6, numericInput("searchBox2", label = "Introduce Part No.", value = NA)),
                                     column(6, numericInput("searchQuantity2", label = "Introduce Quantity", value = NA)),
                                     column(6, numericInput("searchBox3", label = "Introduce Part No.", value = NA)),

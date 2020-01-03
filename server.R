@@ -15,7 +15,9 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$searchButton,{
     if(!is.null(input$searchBox1) && is.numeric(input$searchBox1) && !is.null(input$searchQuantity1) && is.numeric(input$searchQuantity1)){
-      found <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox1, c(-1,-3)]
+      found <- dataframe$ALL[dataframe$ALL$PartID %in% input$searchBox1, ]
+      found$X.1 <- NULL
+      found$X <- NULL
       found <- found[found$Quantity > input$searchQuantity1,]
       found <- found[order(found$Cost.Per.Unit), ]
       found <- found[1,]
@@ -32,12 +34,15 @@ shinyServer(function(input, output, session) {
             found3 <- found3[found3$Quantity > input$searchQuantity3,]
             found3 <- found3[order(found3$Cost.Per.Unit), ]
             found3 <- found3[1,]
-            output$partid_results <- renderDataTable(datatable(rbind(found, found2, found3), options = list(order = list(list(1, 'asc')))))
+            foundALL <- datatable(rbind(found, found2, found3), rownames=F)
+            output$partid_results <- renderDataTable(foundALL)
           } else {
-            output$partid_results <- renderDataTable(datatable(rbind(found, found2), options = list(order = list(list(1, 'asc')))))
+            foundALL <- datatable(rbind(found, found2), rownames=F)
+            output$partid_results <- renderDataTable(foundALL)
           }
         } else {
-          output$partid_results <- renderDataTable(datatable(found, options = list(order = list(list(1, 'asc'))))) 
+          foundALL <- datatable(found, rownames=F)
+          output$partid_results <- renderDataTable(foundALL)
         }
       }
     } else {
