@@ -3,6 +3,8 @@ version: '3.7'
 services:
   adampartsfinder:
     image: acsdesk/adampartsfinder
+    build: .
+    platform: linux/amd64
     restart: unless-stopped
     container_name: "AdamPartsFinder"
     ports:
