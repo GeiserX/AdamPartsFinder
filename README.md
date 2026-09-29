@@ -15,7 +15,7 @@ Proof of concept of a price comparison web app for parts from several suppliers.
 ## Features
 
 - Search up to three part numbers at once with a minimum quantity; for each, it shows the cheapest supplier offer with enough stock.
-- Upload a CSV per supplier (A, B, C); it is saved under `data/` and reloaded on start.
+- Upload a CSV per supplier (A, B, C); it is saved under `data/` inside the container and reloaded on restart (`docker compose down` discards it).
 - Uploads up to 200 MB.
 - Browse the loaded supplier tables in the UI.
 - Sample supplier CSVs ship in `data/`.
