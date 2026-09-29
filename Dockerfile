@@ -1,22 +1,10 @@
-FROM openanalytics/r-base
-MAINTAINER Sergio Fernández "acsdesk@protonmail.com"
+FROM --platform=linux/amd64 rocker/shiny:4.6
 
-RUN apt-get update && apt-get upgrade -y
+RUN install2.r --error shinydashboard shinyWidgets DT
 
-RUN R -e "install.packages(c('shiny', 'shinydashboard', 'shinyWidgets', 'DT'), repos='https://cloud.r-project.org/')"
+COPY . /srv/adampartsfinder
+RUN chown -R shiny:shiny /srv/adampartsfinder/data
 
-RUN mkdir -p /root/adampartsfinder
-COPY . /root/adampartsfinder
-  
-#VOLUME /root/adampartsfinder/data ## To improve read/write speeds on this directory
-
+USER shiny
 EXPOSE 3838
-CMD ["R", "-e", "shiny::runApp('/root/adampartsfinder', port = 3838, host = '0.0.0.0')"]
-
-# docker build -t acsdesk/adampartsfinder .
-
-## To see shiny logs -- docker logs [container-name]
-## To know container-name -- docker ps (last column)
-## To stop all running containers -- docker stop $(docker ps -a -q)
-## To remove all running containers -- docker rm $(docker ps -a -q)
-## To remove all images -- docker rmi $(docker images -q)
+CMD ["R", "-e", "shiny::runApp('/srv/adampartsfinder', port = 3838, host = '0.0.0.0')"]
